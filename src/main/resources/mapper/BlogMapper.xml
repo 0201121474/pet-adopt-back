@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pet.dao.BlogMapper">
+    <resultMap id="BlogResultMap" type="com.pet.entity.Blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="introduce" column="introduce"/>
+        <result property="address" column="address"/>
+        <result property="images" column="images"/>
+        <result property="petname" column="petname"/>
+        <result property="petsex" column="petsex"/>
+        <result property="petage" column="petage"/>
+        <result property="petadopt" column="petadopt"/>
+        <result property="varieties" column="varieties"/>
+        <result property="free" column="free"/>
+        <result property="time" column="time"/>
+        <result property="userId" column="userId"/>
+        <association property="user" javaType="com.pet.entity.User">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="sex" column="sex"/>
+            <result property="name" column="name"/>
+            <result property="telephone" column="telephone"/>
+        </association>
+    </resultMap>
+    <insert id="saveBlog" parameterType="com.pet.entity.Blog">
+        insert into petcenter.blog (title, introduce,address, images,petname,petsex,petage,petadopt,varieties,free,time,user_id)
+         VALUES (#{title},#{introduce},#{address},#{images},#{petname},#{petsex},#{petage},#{petadopt},#{varieties},#{free},#{time},#{userId})
+    </insert>
+    <update id="updateBlog">
+        update petcenter.blog set title=#{title},introduce=#{introduce},address=#{address},images=#{images},petname=#{petname},petsex=#{petsex},petage=#{petage},
+        petadopt=#{petadopt},varieties=#{varieties},free=#{free},time=#{time} where id =#{id}
+    </update>
+    <select id="selectMyBlog" resultType="com.pet.entity.Blog" resultMap="BlogResultMap">
+        select * from petcenter.blog
+    </select>
+    <select id="queryAllBlog" resultType="com.pet.entity.Blog">
+        select * from petcenter.blog
+    </select>
+    <select id="queryBlogById" resultType="com.pet.entity.Blog">
+        select * from petcenter.blog where blog.id = #{id}
+    </select>
+    <select id="queryBlogByUserId" resultType="com.pet.entity.Blog" parameterType="integer">
+        select * from petcenter.blog where blog.user_id = #{userid}
+    </select>
+    <select id="queryBlogPage" resultType="com.pet.entity.Blog">
+        select * from petcenter.blog ${ew.customSqlSegment}
+    </select>
+
+</mapper>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pet.dao.PetBlogMapper">
+    <resultMap id="PetBlogResultMap" type="com.pet.entity.PetBlog">
+        <id property="id" column="id"/>
+        <result property="introduce" column="introduce"/>
+        <result property="images" column="images"/>
+        <result property="title" column="title"/>
+        <result property="time" column="time"/>
+        <result property="userId" column="user_id"/>
+        <association property="user" javaType="com.pet.entity.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="sex" column="sex"/>
+            <result property="name" column="name"/>
+            <result property="telephone" column="telephone"/>
+        </association>
+    </resultMap>
+    <insert id="insertPetBlog" parameterType="com.pet.entity.PetBlog">
+        insert into petcenter.pet_blog (title, introduce, images, time, user_id)
+        values (#{title},#{introduce},#{images},#{time},#{userId})
+    </insert>
+    <update id="updatePetBlog">
+        update petcenter.pet_blog
+        set title=#{title}, introduce=#{introduce}, images=#{images}, time=#{time}, user_id=#{userId}
+        where id=#{id}
+    </update>
+    <select id="queryAll" resultType="com.pet.entity.PetBlog" resultMap="PetBlogResultMap">
+        select * from petcenter.pet_blog left join petcenter.user on user_id = user.id
+    </select>
+    <select id="queryById" resultType="com.pet.entity.PetBlog" resultMap="PetBlogResultMap">
+        select * from petcenter.pet_blog left join petcenter.user on user_id = user.id where pet_blog.id = #{id}
+    </select>
+    <select id="selectMyPetBlog" resultType="com.pet.entity.PetBlog" resultMap="PetBlogResultMap">
+        select p.*,u.name
+        from petcenter.pet_blog p,petcenter.user u
+        where p.user_id = u.id
+    </select>
+    <select id="queryBlogPage" resultType="com.pet.entity.PetBlog">
+        select * from petcenter.pet_blog ${ew.customSqlSegment}
+    </select>
+
+</mapper>

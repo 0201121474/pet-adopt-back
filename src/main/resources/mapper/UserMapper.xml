@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pet.dao.UserMapper">
+    <resultMap id="UserResult" type="com.pet.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
+        <result property="email" column="email"/>
+        <result property="sex" column="sex"/>
+        <result property="name" column="name"/>
+        <result property="telephone" column="telephone"/>
+        <collection property="blogs" ofType="com.pet.entity.Blog" resultMap="BlogResult"/>
+        <collection property="petBlogs" ofType="com.pet.entity.PetBlog" resultMap="PetBlogResult"/>
+    </resultMap>
+    <resultMap id="BlogResult" type="com.pet.entity.Blog">
+        <id property="id" column="bid"/>
+        <result property="varieties" column="varieties"/>
+        <result property="address" column="address"/>
+        <result property="petsex" column="petsex"/>
+        <result property="petname" column="petname"/>
+        <result property="petage" column="petage"/>
+        <result property="petadopt" column="petadopt"/>
+        <result property="free" column="free"/>
+        <result property="title" column="title"/>
+        <result property="time" column="time"/>
+        <result property="introduce" column="introduce"/>
+        <result property="images" column="images"/>
+        <result property="userId" column="userId"/>
+    </resultMap>
+    <resultMap id="PetBlogResult" type="com.pet.entity.PetBlog">
+        <id property="id" column="id"/>
+        <result property="images" column="images"/>
+        <result property="introduce" column="introduce"/>
+        <result property="title" column="title"/>
+        <result property="userId" column="userId"/>
+    </resultMap>
+    <insert id="saveUser" parameterType="com.pet.entity.User">
+        insert into petcenter.user (name, sex, telephone, email, username, password)
+        VALUES (#{name},#{sex},#{telephone},#{email},#{username},#{password})
+    </insert>
+    <update id="updateUserById">
+        update petcenter.user set username=#{username},password=#{password}, avatar=#{avatar}, email=#{email},sex=#{sex},name=#{name},
+                                  telephone=#{telephone} where id=#{id}
+    </update>
+    <select id="queryUser" resultType="java.lang.Long" parameterType="string">
+        select id from petcenter.user where user.username = #{username}
+    </select>
+    <select id="queryAllById" parameterType="long" resultType="com.pet.entity.User" resultMap="UserResult">
+        select user.* ,
+        blog.id as bid,blog.varieties,blog.petsex,blog.petname,blog.petage,blog.petadopt,blog.free,blog.title,blog.address,blog.introduce,blog.images,blog.user_id
+        from petcenter.user left join petcenter.blog on user.id = blog.user_id where user.id = #{id}
+    </select>
+    <select id="queryUserById" resultType="com.pet.entity.User" parameterType="long">
+        select * from petcenter.user where user.id = #{id}
+    </select>
+    <select id="queryUserByUserName" resultType="com.pet.entity.User">
+        select * from petcenter.user where user.username = #{username}
+    </select>
+    <select id="queryAllByUserName" resultType="com.pet.entity.User" resultMap="UserResult">
+        select user.* ,
+        blog.id as bid,blog.varieties,blog.petsex,blog.petname,blog.petage,blog.petadopt,blog.free,blog.title,blog.address,blog.introduce,blog.images,blog.user_id
+        from petcenter.user left join petcenter.blog on user.id = blog.user_id where user.username = #{username}
+    </select>
+</mapper>

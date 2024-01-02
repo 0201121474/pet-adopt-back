@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pet.dao.AdoptionMapper">
+    <resultMap id="AdoptionResultMap" type="com.pet.entity.Adoption">
+        <id property="id" column="id"/>
+        <result property="address" column="address"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="blogtitle" column="blogtitle"/>
+        <result property="telephone" column="telephone"/>
+        <result property="state" column="state"/>
+        <result property="qqId" column="qqId"/>
+        <result property="wechatId" column="wechatId"/>
+        <result property="userId" column="userId"/>
+        <association property="user" javaType="com.pet.entity.User">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="sex" column="sex"/>
+            <result property="name" column="name"/>
+            <result property="telephone" column="telephone"/>
+        </association>
+    </resultMap>
+    <insert id="insertAdoption" parameterType="com.pet.entity.Adoption">
+        insert into petcenter.adoption(name,address,email,telephone,qqId,wechatId,blogtitle,content,state,blog_id,user_id)
+        values (#{name},#{address},#{email},#{telephone},#{qqId},#{wechatId},#{blogtitle},#{content},#{state},#{blogId},#{userId})
+    </insert>
+    <update id="updateAdoption">
+        update petcenter.adoption set name=#{name},address=#{address},email=#{email},telephone=#{telephone},qq_id=#{qqId},wechat_id=#{wechatId},blogtitle=#{blogtitle},
+                                      content=#{content},state=#{state},blog_id=#{blogId},user_id=#{userId} where id =#{id}
+    </update>
+    <select id="queryAdoptionById" resultType="com.pet.entity.Adoption">
+        select * from petcenter.adoption where adoption.id = #{adoptionId}
+    </select>
+    <select id="queryAdoptionByUserId" resultType="com.pet.entity.Adoption" parameterType="list">
+        select * from petcenter.adoption where adoption.user_id = #{userId}
+    </select>
+
+</mapper>
+
