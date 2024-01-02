@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @SpringBootTest
-class PetcenterBackApplicationTests {
+class PetAdoptBackApplicationTests {
     @Autowired
     BlogMapper blogMapper;
     @Autowired
